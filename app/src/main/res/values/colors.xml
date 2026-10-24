@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_dark">#070B14</color>
+    <color name="bg_panel">#101A2B</color>
+    <color name="cyan_primary">#62F2FF</color>
+    <color name="purple_primary">#8B5CF6</color>
+    <color name="green_success">#56F0A8</color>
+    <color name="amber_warning">#F6C453</color>
+    <color name="red_error">#FF6B75</color>
+    <color name="text_primary">#EAF7FF</color>
+    <color name="text_secondary">#A8B8CC</color>
+</resources>
