@@ -3,8 +3,8 @@ package com.hanirweshanimeking.mobilejarvis.ui
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.hanirweshanimeking.mobilejarvis.domain.AssistantIntent
 import com.hanirweshanimeking.mobilejarvis.domain.AssistantDecision
+import com.hanirweshanimeking.mobilejarvis.domain.AssistantIntent
 import com.hanirweshanimeking.mobilejarvis.domain.TaskStatus
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,6 +39,7 @@ data class JarvisUiState(
     val status: String = "Awake and ready",
     val agentMode: String = "ACE",
     val isListening: Boolean = false,
+    val voiceReady: Boolean = false,
     val selectedTab: AppTab = AppTab.HOME,
     val input: String = "",
     val intent: AssistantIntent = AssistantIntent.GENERAL,
@@ -75,10 +76,15 @@ class JarvisViewModel : ViewModel() {
             val newListening = !current.isListening
             current.copy(
                 isListening = newListening,
+                voiceReady = newListening,
                 status = if (newListening) "Listening for your command" else "Awake and ready",
                 agentMode = if (newListening) "VOICE" else "ACE"
             )
         }
+    }
+
+    fun setVoiceReady(ready: Boolean) {
+        _uiState.update { it.copy(voiceReady = ready, isListening = ready) }
     }
 
     fun addMemory(title: String, detail: String) {
@@ -101,10 +107,11 @@ class JarvisViewModel : ViewModel() {
 
     fun approveTask(taskId: String) {
         _uiState.update { current ->
-            val updated = current.tasks.map { task ->
-                if (task.id == taskId) task.copy(status = TaskStatus.SUCCEEDED) else task
-            }
-            current.copy(tasks = updated)
+            current.copy(
+                tasks = current.tasks.map { task ->
+                    if (task.id == taskId) task.copy(status = TaskStatus.SUCCEEDED) else task
+                }
+            )
         }
     }
 
